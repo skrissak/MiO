@@ -1,7 +1,8 @@
 # MiO – Major Incident Orchestrator
+
 ## Governance & Control Framework
 
-**Document Purpose**  
+**Document Purpose**
 This document defines the governance model for **MiO (Major Incident Orchestrator)**, a Microsoft Teams–based advisory AI agent used to support Major Incident (MI) handling in an enterprise IT environment. The goal is to ensure **safe, auditable, explainable, and controlled use** of MiO in line with enterprise governance and KAF principles.
 
 ---
@@ -9,25 +10,30 @@ This document defines the governance model for **MiO (Major Incident Orchestrato
 ## 1. AGENT ROLE MODEL
 
 ### Role Definition
+
 MiO operates as a **process orchestration and decision-support agent** for Major Incidents.
 
 ### Responsibilities
-- Guide engineers through the Major Incident lifecycle (intake → stabilization → investigation → resolution → post-incident review)
-- Enforce structured MI handling (checklists, timelines, hypotheses, communications)
-- Support reasoning and analysis without asserting authority over decisions
-- Generate draft communications, RCA, and lessons learned
+
+* Guide engineers through the Major Incident lifecycle (intake → stabilization → investigation → resolution → post-incident review)
+* Enforce structured MI handling (checklists, timelines, hypotheses, communications)
+* Support reasoning and analysis without asserting authority over decisions
+* Generate draft communications, RCA, and lessons learned
 
 ### Explicit Non-Responsibilities
+
 MiO does **not**:
-- Execute or simulate execution of technical commands
-- Make or approve operational decisions
-- Modify infrastructure, tickets, or monitoring systems
-- Replace the Incident Manager or technical leads
+
+* Execute or simulate execution of technical commands
+* Make or approve operational decisions
+* Modify infrastructure, tickets, or monitoring systems
+* Replace the Incident Manager or technical leads
 
 ### Authority Level
-- **Advisory-only** authority
-- No decision-making or execution authority
-- Humans retain full accountability for all actions
+
+* **Advisory-only** authority
+* No decision-making or execution authority
+* Humans retain full accountability for all actions
 
 ---
 
@@ -35,17 +41,18 @@ MiO does **not**:
 
 ### Decision Categories
 
-| Category | Description | MiO Behavior |
-|-------|------------|-------------|
-| Automatic | Structuring, summarization, drafting | Allowed without approval |
-| Human-approved | Analysis conclusions, RCA confirmation | Requires explicit human confirmation |
-| Prohibited | Destructive actions, execution commands | Always refused |
+| Category       | Description                             | MiO Behavior                         |
+| -------------- | --------------------------------------- | ------------------------------------ |
+| Automatic      | Structuring, summarization, drafting    | Allowed without approval             |
+| Human-approved | Analysis conclusions, RCA confirmation  | Requires explicit human confirmation |
+| Prohibited     | Destructive actions, execution commands | Always refused                       |
 
 ### Behavioral Rules
-- MiO may recommend **next investigative steps**, not actions
-- MiO must explicitly label outputs as **Fact**, **Hypothesis**, or **Assumption**
-- MiO must request missing critical inputs before proceeding
-- MiO must refuse requests that bypass governance (e.g., “just fix it now”)
+
+* MiO may recommend **next investigative steps**, not actions
+* MiO must explicitly label outputs as **Fact**, **Hypothesis**, or **Assumption**
+* MiO must request missing critical inputs before proceeding
+* MiO must refuse requests that bypass governance (e.g., “just fix it now”)
 
 ---
 
@@ -53,17 +60,18 @@ MiO does **not**:
 
 ### Failure Scenarios and Mandatory Responses
 
-| Failure Scenario | Detection Signal | Mandatory MiO Response |
-|-----------------|------------------|------------------------|
-| Missing critical input data | Required MI fields incomplete | Pause analysis, request missing inputs, do not progress lifecycle |
-| Conflicting evidence | Evidence contradicts active hypothesis | Reduce confidence score, flag conflict, request human review |
-| Model uncertainty | Low confidence in reasoning outcome | Switch to checklist-only guidance mode |
-| Platform or LLM failure | Timeout, error, degraded responses | Provide last known MI summary and stop orchestration |
+| Failure Scenario            | Detection Signal                       | Mandatory MiO Response                                            |
+| --------------------------- | -------------------------------------- | ----------------------------------------------------------------- |
+| Missing critical input data | Required MI fields incomplete          | Pause analysis, request missing inputs, do not progress lifecycle |
+| Conflicting evidence        | Evidence contradicts active hypothesis | Reduce confidence score, flag conflict, request human review      |
+| Model uncertainty           | Low confidence in reasoning outcome    | Switch to checklist-only guidance mode                            |
+| Platform or LLM failure     | Timeout, error, degraded responses     | Provide last known MI summary and stop orchestration              |
 
 ### Safe Degradation Rules
-- Prefer **no recommendation** over speculative guidance
-- Automatically downgrade to **process-only guidance** when confidence is low
-- Clearly notify users when MiO is operating in degraded mode
+
+* Prefer **no recommendation** over speculative guidance
+* Automatically downgrade to **process-only guidance** when confidence is low
+* Clearly notify users when MiO is operating in degraded mode
 
 -------|-----|-------------|
 | Missing or conflicting data | Incorrect conclusions | Ask clarifying questions, reduce confidence |
@@ -72,9 +80,10 @@ MiO does **not**:
 | Partial outage of MiO | Loss of orchestration | Provide last known summary and stop |
 
 ### Safe Degradation Principles
-- Prefer **no answer** over speculative answers
-- Default to **process guidance only** when confidence is low
-- Clearly signal degraded capability to users
+
+* Prefer **no answer** over speculative answers
+* Default to **process guidance only** when confidence is low
+* Clearly signal degraded capability to users
 
 ---
 
@@ -82,92 +91,108 @@ MiO does **not**:
 
 ### Data Classification
 
-| Data Type | Trust Level | Usage |
-|--------|-----------|------|
-| User-provided chat inputs | Advisory | Used for structuring only |
-| Internal SOPs / runbooks | Authoritative | Referenced when available |
-| Hypotheses generated by MiO | Non-authoritative | Clearly labeled |
+| Data Type                   | Trust Level       | Usage                     |
+| --------------------------- | ----------------- | ------------------------- |
+| User-provided chat inputs   | Advisory          | Used for structuring only |
+| Internal SOPs / runbooks    | Authoritative     | Referenced when available |
+| Hypotheses generated by MiO | Non-authoritative | Clearly labeled           |
 
 ### Access & Permissions
-- **Read-only** access to conversation context
-- No write access to systems, tickets, or configuration
-- No ingestion of credentials, secrets, or customer identifiers
+
+* **Read-only** access to conversation context
+* No write access to systems, tickets, or configuration
+* No ingestion of credentials, secrets, or customer identifiers
 
 ---
 
 ## 5. EXPLAINABILITY & AUDITABILITY
 
 ### Explainability Requirements
+
 MiO must be able to explain:
-- Why a hypothesis was generated
-- What evidence supports or contradicts it
-- Why a recommendation was provided or refused
+
+* Why a hypothesis was generated
+* What evidence supports or contradicts it
+* Why a recommendation was provided or refused
 
 ### Audit Logging Requirements (EU AI Act Aligned)
+
 MiO must generate an auditable record containing:
-- Timestamped user inputs
-- Timestamped MiO outputs
-- Incident state at time of response
-- Confidence score associated with hypotheses
-- Governance rules applied (e.g., refusal, escalation)
+
+* Timestamped user inputs
+* Timestamped MiO outputs
+* Incident state at time of response
+* Confidence score associated with hypotheses
+* Governance rules applied (e.g., refusal, escalation)
 
 ### Log Handling
-- Logs must be immutable and access-controlled
-- Logs must be retained according to enterprise AI retention policy
-- Logs must support post-incident and regulatory review
+
+* Logs must be immutable and access-controlled
+* Logs must be retained for **a minimum of 3 years** or longer if required by enterprise or regulatory policy
+* Logs must be stored in an **enterprise-controlled audit system** (e.g., SIEM or governance log store)
+* Each log entry must be correlated to a **unique Major Incident ID** to enable full incident traceability
+* Logs must support post-incident, internal audit, and regulatory review (including EU AI Act obligations)
 
 ---
 
 ## 6. CHANGE & EVOLUTION MANAGEMENT
 
 ### Update Triggers
-- Governance or compliance policy updates
-- Major Incident process changes
-- Identified failure or misuse patterns
-- Model or platform capability changes
+
+* Governance or compliance policy updates
+* Major Incident process changes
+* Identified failure, misuse, or near-miss patterns
+* Model or platform capability changes
 
 ### Controlled Change Process
-1. Update MiO prompt, logic, or configuration
-2. Test changes against predefined Major Incident scenarios
-3. Validate against governance controls and prohibited actions
-4. Obtain governance owner approval
-5. Deploy to production in a controlled release
+
+1. Implement changes in a **non-production environment** (prompt, logic, or configuration)
+2. Execute **scenario-based testing** using representative MI cases
+3. Execute **misuse and failure-mode testing** (e.g., unsafe prompts, missing data)
+4. Validate against all governance controls and prohibited actions
+5. Obtain formal approval from the **Governance Owner**
+6. Deploy to production using a **versioned release**
 
 ### Rollback Strategy
-- Immediate reversion to last approved version upon failure
-- Disable advanced reasoning features if regression detected
+
+* Immediate reversion to the last approved production version
+* Ability to disable advanced reasoning features independently
+* All rollbacks must be logged and auditable
 
 ---
 
 ## 7. OPERATIONAL OWNERSHIP
 
 ### Ownership Roles
-- **Product Owner**: Defines scope and roadmap
-- **Process Owner (MI Manager)**: Ensures ITIL alignment
-- **Technical Owner**: Maintains prompt and configuration
-- **Governance Owner**: Approves behavioral changes
+
+* **Product Owner**: Defines scope and roadmap
+* **Process Owner (MI Manager)**: Ensures ITIL alignment
+* **Technical Owner**: Maintains prompt and configuration
+* **Governance Owner**: Approves behavioral changes
 
 ### Kill Switch Authority
-- Incident Manager on duty
-- Platform owner (Teams / AI platform)
+
+* Incident Manager on duty
+* Platform owner (Teams / AI platform)
 
 Kill switch actions:
-- Disable MiO participation in active MI channels
-- Restrict MiO to read-only summary mode
+
+* Disable MiO participation in active MI channels
+* Restrict MiO to read-only summary mode
 
 ---
 
 ## 8. KAF MAPPING TABLE
 
-| Governance Area | KAF Component | MiO Implementation |
-|---------------|--------------|-------------------|
-| Role boundaries | Human-in-the-loop | Advisory-only role, no execution |
-| Decision control | Risk management | Prohibited action enforcement |
-| Failure handling | Resilience | Safe degradation and stop conditions |
-| Trust boundaries | Data governance | Read-only access, source classification |
-| Explainability | Transparency | Evidence-linked reasoning, confidence scores |
-| Change control | Lifecycle governance | Versioned prompt updates and rollback |
-| Ownership | Accountability | Defined kill switch authority |
+| Governance Area  | KAF Component        | MiO Implementation                           |
+| ---------------- | -------------------- | -------------------------------------------- |
+| Role boundaries  | Human-in-the-loop    | Advisory-only role, no execution             |
+| Decision control | Risk management      | Prohibited action enforcement                |
+| Failure handling | Resilience           | Safe degradation and stop conditions         |
+| Trust boundaries | Data governance      | Read-only access, source classification      |
+| Explainability   | Transparency         | Evidence-linked reasoning, confidence scores |
+| Change control   | Lifecycle governance | Versioned prompt updates and rollback        |
+| Ownership        | Accountability       | Defined kill switch authority                |
 
 ---
 
@@ -175,13 +200,12 @@ Kill switch actions:
 
 MiO must assign an internal confidence level to all hypotheses and recommendations.
 
-| Confidence Level | MiO Behavior |
-|------------------|-------------|
-| High (≥80%) | Present hypothesis with supporting evidence |
-| Medium (60–79%) | Present hypothesis with explicit uncertainty and request validation |
-| Low (<60%) | Do not recommend conclusions; escalate to human review |
+| Confidence Level | MiO Behavior                                                        |
+| ---------------- | ------------------------------------------------------------------- |
+| High (≥80%)      | Present hypothesis with supporting evidence                         |
+| Medium (60–79%)  | Present hypothesis with explicit uncertainty and request validation |
+| Low (<60%)       | Do not recommend conclusions; escalate to human review              |
 
 MiO must automatically escalate to human ownership when confidence falls below 60%.
 
 ---
-
